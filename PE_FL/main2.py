@@ -398,7 +398,7 @@ def main():
             
     for global_epoch in range(1,(args.epochs)+1):
         print("Global epoch:",global_epoch)
-        users = random.sample(parts_idx, 2)
+        users = random.sample(parts_idx, 10)
         print("this round choose user:", users)
         local_weights =[]
         for user in users:
@@ -466,7 +466,7 @@ def main():
             
             # Loading global weights before data parallel
             if (len(global_weights) == 0):
-                continue
+                print("global_weights is empty!")
             else:
                 try:
                     model.load_state_dict(global_weights)
@@ -489,7 +489,7 @@ def main():
                 print("\t==> train_loader size:{}".format(len(train_loader)))
 
             print("=> starting main loop ...")
-            for epoch in range(1, 2):
+            for epoch in range(1, 6):
                 print("=> starting training user {} epoch {} ..".format(user,epoch))
                 iterate("train", args, train_loader, model, optimizer, logger, epoch)  # train for one epoch
                 # # validation memory reset
