@@ -10,7 +10,7 @@ import torch.optim
 import torch.utils.data
 import time
 
-from dataloaders.kitti_loader import load_calib, input_options, KittiDepth
+from dataloaders.kitti_loader2 import load_calib, input_options, KittiDepth
 from metrics import AverageMeter, Result
 import criteria
 import helper
@@ -200,24 +200,29 @@ def iterate(mode, args, loader, model, optimizer, logger, epoch):
     torch.cuda.empty_cache()
     for i, batch_data in enumerate(loader):
         dstart = time.time()
-        # batch_data = {
-        #     key: val.to(device)
-        #     for key, val in batch_data.items() if val is not None
-        # }
-
-        if d_lost == True:
-            for key, val in batch_data.items():
-                if key=='d':
-                    val = torch.zeros_like(val)
-        elif rgb_lost == True:
-            for key, val in batch_data.items():
-                if key=='rgb':
-                    val = torch.zeros_like(val)
-                    
         batch_data = {
             key: val.to(device)
             for key, val in batch_data.items() if val is not None
         }
+
+        # if d_lost == True:
+        #     for key, val in batch_data.items():
+        #         if key=='d':
+        #             val = torch.zeros_like(val)
+        # elif rgb_lost == True:
+        #     for key, val in batch_data.items():
+        #         if key=='rgb':
+        #             val = torch.zeros_like(val)
+                    
+        # batch_data = {
+        #     key: val.to(device)
+        #     for key, val in batch_data.items() if val is not None
+        # }
+        
+        # for key, val in batch_data.items():
+        #     if key=='d' or key=='rgb':
+        #         print(val)
+                
 
         gt = batch_data[
             'gt'] if mode != 'test_prediction' and mode != 'test_completion' else None
@@ -339,13 +344,13 @@ def random_lost():
 
 
 # simulate modal missing
-d_lost = False
-rgb_lost = False  
+args.d_lost = False
+args.rgb_lost = False  
 
 def main():
     global args
-    global d_lost
-    global rgb_lost
+    # global d_lost
+    # global rgb_lost
     
     checkpoint = None
     is_eval = False
@@ -432,19 +437,19 @@ def main():
         for user in users:
             # modal lost controller
             modal_lost = False
-            d_lost = False
-            rgb_lost = False
-            
+            args.d_lost = False
+            args.rgb_lost = False
+            user = 2  # debug only!
             args.round = user
             print("This is {} user-------------".format(args.round))
             if user in range(1,21):  # 20% missing data hhhh
                 print("WARNING! Start simulate modal missing!")
                 modal_lost = True 
-                d_lost, rgb_lost = random_lost()
-                print("depth lost:{} rgb lost:{}".format(d_lost, rgb_lost))
+                args.d_lost, args.rgb_lost = random_lost()
+                print("depth lost:{} rgb lost:{}".format(args.d_lost, args.rgb_lost))
             else:
-                d_lost = False
-                rgb_lost = False
+                args.d_lost = False
+                args.rgb_lost = False
             
             # rebuild model every user
             print("=> creating model and optimizer ... ", end='')
@@ -520,9 +525,9 @@ def main():
             # Data loading code
             print("=> creating data loaders ... ")
             if not is_eval:
-                train_dataset = KittiDepth('train', args)
                 if modal_lost == True:
                     print("Modal Missing!Dataset will be replaced by zero matrix in iterate()!!!!!!!!!!!!")
+                train_dataset = KittiDepth('train', args)
                 train_loader = torch.utils.data.DataLoader(train_dataset,
                                                         batch_size=args.batch_size,
                                                         shuffle=True,
@@ -570,7 +575,7 @@ def main():
         # validation memory reset
         for p in model.parameters():
             p.requires_grad = False
-        result, is_best = iterate("val", args, val_loader, model, None, logger, epoch)  # evaluate on validation set
+        result, is_best = iterate("val", args, val_loader, model, None, logger, global_epoch)  # evaluate on validation set
         helper.save_checkpoint({ # save checkpoint
             'epoch': global_epoch,
             'model': model.module.state_dict(),
