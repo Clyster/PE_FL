@@ -2,7 +2,9 @@
 > unzip part.zip before running run.sh
 
 jieguo jieguo2 baseline的表现
+
 jieguo3 错误改动
+
 jieguo4 5 20%模态丢失
 ### 0507 
 resume的ckpt会在所有循环外载入到global weights中，相当于初始化的值。
