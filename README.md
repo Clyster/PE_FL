@@ -10,5 +10,5 @@ resume的ckpt会在所有循环外载入到global weights中，相当于初始�
   *   训练完5轮之后，保存loacal权重
 * 训练完当前批次幸运用户之后，计算新的global weights。然后根据这个global weights来进行之前被删掉的best result的判断。保存结果。进入下一个global循环
 
-  ### 0510
-  main3.py kittiloader2.py模拟了rgb和depth单一丢失的情况
+### 0510
+main3.py kittiloader2.py模拟了rgb和depth单一丢失的情况
