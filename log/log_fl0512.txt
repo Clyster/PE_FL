@@ -1,0 +1,17 @@
+Namespace(batch_size=6, convolutional_layer_encoding='xyz', cpu=False, criterion='l2', data_folder='/home/ubuntu-user/Desktop/KITTI/kitti_depth/depth', data_folder_rgb='/home/ubuntu-user/Desktop/KITTI/kitti_raw', data_folder_save='/home/ubuntu-user/Desktop/KITTI/kitti_depth/submit_test/', dilation_rate=2, epochs=100, evaluate='', freeze_backbone=False, input='rgbd', jitter=0.1, lr=0.001, network_model='e', not_random_crop=False, print_freq=10, random_crop_height=320, random_crop_width=1216, rank_metric='rmse', result='../results', resume='', round=1, start_epoch=0, start_epoch_bias=0, test=False, use_d=True, use_g=True, use_rgb=True, val='select', val_h=352, val_w=1216, weight_decay=1e-06, workers=4)
+=> using 'cuda' for computation.
+=> logger created.
+	==> val_loader size:1000
+Global epoch: 0
+this round choose user: [28, 40, 26, 29, 84, 43, 9, 90, 60, 49]
+This is 28 user-------------
+WARNING! Start simulate modal missing!
+depth lost:False rgb lost:True
+=> creating model and optimizer ... completed.
+global_weights is empty!
+=> creating data loaders ... 
+Modal Missing!Dataset will be replaced by zero matrix in iterate()!!!!!!!!!!!!
+success open part_ 28
+	==> train_loader size:143
+=> starting main loop ...
+=> starting training user 28 epoch 1 ..
