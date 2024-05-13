@@ -354,7 +354,7 @@ def main():
     
     checkpoint = None
     is_eval = False
-    parts_idx = range(1,101)
+    parts_idx = range(1,51)
     global_weights =[]
 
 
@@ -439,10 +439,10 @@ def main():
             modal_lost = False
             args.d_lost = False
             args.rgb_lost = False
-            user = 2  # debug only!
+            # user = 2  # debug only!
             args.round = user
             print("This is {} user-------------".format(args.round))
-            if user in range(1,21):  # 20% missing data hhhh
+            if user in range(1,11):  # 20% missing data hhhh
                 print("WARNING! Start simulate modal missing!")
                 modal_lost = True 
                 args.d_lost, args.rgb_lost = random_lost()
@@ -582,7 +582,7 @@ def main():
             'best_result': logger.best_result,
             #'optimizer' : optimizer.state_dict(),
             'args' : args,
-        }, is_best, epoch, logger.output_directory)
+        }, is_best, global_epoch, logger.output_directory)
         print("Global weights: global epoch {} Saved!".format(global_epoch))
 
 
