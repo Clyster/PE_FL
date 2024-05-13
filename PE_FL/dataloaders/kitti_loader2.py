@@ -186,7 +186,7 @@ def rgb_read(filename, args):
     # simualte rgb missing
     if args.rgb_lost == True:
         rgb_png = np.zeros_like(rgb_png)
-        pring("rgb files missing!")
+        # print("rgb files missing!")
     
     return rgb_png
 
@@ -201,7 +201,7 @@ def depth_read(filename, args):
     img_file.close()
     if args.d_lost == True:
         depth_png = np.zeros_like(depth_png)
-        print("depth files missing!")
+        # print("depth files missing!")
     # # make sure we have a proper 16bit depth map here.. not 8bit!
     # assert np.max(depth_png) > 255, \
     #     "np.max(depth_png)={}, path={}".format(np.max(depth_png), filename)
