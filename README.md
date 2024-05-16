@@ -28,4 +28,4 @@ main3.py kittiloader2.py模拟了rgb和depth单一丢失的情况
 之后要调整更多参数！
 
 ### 516
-下调lr一个数量级，到1e-4
+在下采样的情况下测试benchmark
