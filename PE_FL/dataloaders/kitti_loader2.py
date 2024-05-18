@@ -24,7 +24,7 @@ def load_calib():
 
     Proj_str = P_rect_line.split(":")[1].split(" ")[1:]
     Proj = np.reshape(np.array([float(p) for p in Proj_str]),
-                      (3, 4)).astype(np.float32)
+                      (3, 4)).astype('float32')
     K = Proj[:3, :3]  # camera matrix
 
     # note: we will take the center crop of the images during augmentation
@@ -186,7 +186,7 @@ def rgb_read(filename, args):
     # simualte rgb missing
     if args.rgb_lost == True:
         rgb_png = np.zeros_like(rgb_png)
-        # print("rgb files missing!")
+        # print("rsbgb files missing!")
     
     return rgb_png
 
@@ -206,7 +206,7 @@ def depth_read(filename, args):
     # assert np.max(depth_png) > 255, \
     #     "np.max(depth_png)={}, path={}".format(np.max(depth_png), filename)
 
-    depth = depth_png.astype(np.float) / 256.
+    depth = depth_png.astype('float') / 256.
     # depth[depth_png == 0] = -1.
     depth = np.expand_dims(depth, -1)
     return depth
@@ -224,7 +224,7 @@ def gt_read(filename):
     assert np.max(depth_png) > 255, \
         "np.max(depth_png)={}, path={}".format(np.max(depth_png), filename)
 
-    depth = depth_png.astype(np.float) / 256.
+    depth = depth_png.astype('float') / 256.
     # depth[depth_png == 0] = -1.
     depth = np.expand_dims(depth, -1)
     return depth
