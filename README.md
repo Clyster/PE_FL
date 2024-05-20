@@ -29,3 +29,5 @@ main3.py kittiloader2.py模拟了rgb和depth单一丢失的情况
 
 ### 516
 在下采样的情况下测试benchmark
+### 518 520
+在上一次前提下，测试仅仅缺失depth数据的情况下的预测表现
