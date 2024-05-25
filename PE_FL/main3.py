@@ -174,8 +174,7 @@ else:
 print("=> using '{}' for computation.".format(device))
 
 # define loss functions
-depth_criterion = criteria.MaskedMSELoss() if (
-    args.criterion == 'l2') else criteria.MaskedL1Loss()
+depth_criterion = criteria.HuberLoss() 
 
 #multi batch
 multi_batch_size = 1
@@ -442,10 +441,11 @@ def main():
             # user = 2  # debug only!
             args.round = user
             print("This is {} user-------------".format(args.round))
-            if user in range(1,11):  # 20% missing data hhhh
+            if user in range(1,11):  # 20 only lost depth
                 print("WARNING! Start simulate modal missing!")
                 modal_lost = True 
-                args.d_lost, args.rgb_lost = random_lost()
+                # args.d_lost, args.rgb_lost = random_lost()
+                args.d_lost = True
                 print("depth lost:{} rgb lost:{}".format(args.d_lost, args.rgb_lost))
             else:
                 args.d_lost = False
