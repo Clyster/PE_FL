@@ -37,10 +37,12 @@ class HuberLoss(nn.Module):
     def forward(self, pred, target):
         assert pred.dim() == target.dim(), "inconsistent dimensions"
         error = target - pred
-        valid_mask = (target > 1).detach()
+        valid_mask = (target > 0).detach()
         error = error[valid_mask]
+        # th_mask = (torch.abs(error) > 1).detach()
+        # error = error(th_mask)
         is_small_error = torch.abs(error) <= self.delta
-        small_error_loss = 0.5 * error**2
+        small_error_loss = 0.5 * torch.abs(error)**2
         large_error_loss = self.delta * (torch.abs(error) - 0.5 * self.delta)
         self.loss = torch.where(is_small_error, small_error_loss, large_error_loss)
         return self.loss.mean()
@@ -68,7 +70,7 @@ class Huber_MSE(nn.Module):
         L2 = 0.2
         assert pred.dim() == target.dim(), "inconsistent dimensions"
         error = target - pred
-        valid_mask = (target > 0).detach()
+        valid_mask = (torch.abs(target) > 0).detach()
         error = error[valid_mask]
         is_small_error = torch.abs(error) <= self.delta
         small_error_loss = 0.5 * error**2
