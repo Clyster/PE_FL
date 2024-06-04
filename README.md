@@ -34,3 +34,4 @@ main3.py kittiloader2.py模拟了rgb和depth单一丢失的情况
 
 
 https://s3.eu-central-1.amazonaws.com/avg-kitti/data_depth_annotated.zip
+https://drive.google.com/file/d/1_N8DQMqf1tUPKVjDqdAtttc_Zc2Beco8/view?usp=sharing
