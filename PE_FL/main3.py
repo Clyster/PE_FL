@@ -252,7 +252,7 @@ def iterate(mode, args, loader, model, optimizer, logger, epoch):
         # inter loss_param
         st1_loss, st2_loss, loss = 0, 0, 0
         w_st1, w_st2 = 0, 0
-        round1, round2, round3 = 1, 3, None
+        round1, round2, round3 = 0, 0, None   # 1, 3, None
         if(actual_epoch <= round1):
             w_st1, w_st2 = 0.2, 0.2
         elif(actual_epoch <= round2):
@@ -444,8 +444,8 @@ def main():
             if user in range(1,11):  # 20 only lost depth
                 print("WARNING! Start simulate modal missing!")
                 modal_lost = True 
-                # args.d_lost, args.rgb_lost = random_lost()
-                args.d_lost = True
+                args.d_lost, args.rgb_lost = random_lost()
+                # args.d_lost = True
                 print("depth lost:{} rgb lost:{}".format(args.d_lost, args.rgb_lost))
             else:
                 args.d_lost = False
@@ -550,7 +550,7 @@ def main():
             print("=> starting main loop ...")
             for epoch in range(1, 6):
                 print("=> starting training user {} epoch {} ..".format(user,epoch))
-                iterate("train", args, train_loader, model, optimizer, logger, epoch)  # train for one epoch
+                iterate("train", args, train_loader, model, optimizer, logger, global_epoch)  # train for one epoch
                 # # validation memory reset
                 # for p in model.parameters():
                 #     p.requires_grad = False
