@@ -200,13 +200,15 @@ def depth_read(filename, args):
     depth_png = np.array(img_file, dtype=int)
     img_file.close()
     if args.d_lost == True:
-        depth_png = np.zeros_like(depth_png)
-        # print("depth files missing!")
+        depth = depth_png.astype('float')
+    else:
+        depth = depth_png.astype('float') / 256.
+
     # # make sure we have a proper 16bit depth map here.. not 8bit!
     # assert np.max(depth_png) > 255, \
     #     "np.max(depth_png)={}, path={}".format(np.max(depth_png), filename)
 
-    depth = depth_png.astype('float') / 256.
+    # depth = depth_png.astype('float') / 256.
     # depth[depth_png == 0] = -1.
     depth = np.expand_dims(depth, -1)
     return depth
@@ -400,6 +402,10 @@ class KittiDepth(data.Dataset):
     def __getraw__(self, index):
         rgb = rgb_read(self.paths['rgb'][index], self.args) if \
             (self.paths['rgb'][index] is not None and (self.args.use_rgb or self.args.use_g)) else None
+        if(self.args.d_lost == True):
+            sparse = depth_read(self.paths['d'][index].replace('/KITTI/','/KITTI2/'), self.args) if (self.paths['d'][index] is not None and self.args.use_d) else None
+        else:
+            sparse = depth_read(self.paths['d'][index], self.args) if (self.paths['d'][index] is not None and self.args.use_d) else None
         sparse = depth_read(self.paths['d'][index], self.args) if \
             (self.paths['d'][index] is not None and self.args.use_d) else None
         target = gt_read(self.paths['gt'][index]) if \
