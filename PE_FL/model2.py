@@ -1020,9 +1020,9 @@ class Subnet_4(nn.Module):
         sparsed_feature5 = self.depth_layer5(sparsed_feature4_plus, geo_s3, geo_s4) # b 128 44 152
         sparsed_feature6 = self.depth_layer6(sparsed_feature5, geo_s4, geo_s4) # b 128 44 152
 
-        # sparsed_feature6_plus = torch.cat([rgb_feature6_plus, sparsed_feature6], 1)
-        # sparsed_feature7 = self.depth_layer7(sparsed_feature6_plus, geo_s4, geo_s5) # b 256 22 76
-        # sparsed_feature8 = self.depth_layer8(sparsed_feature7, geo_s5, geo_s5) # b 256 22 76
+        sparsed_feature6_plus = torch.cat([rgb_feature6_plus, sparsed_feature6], 1)
+        sparsed_feature7 = self.depth_layer7(sparsed_feature6_plus, geo_s4, geo_s5) # b 256 22 76
+        sparsed_feature8 = self.depth_layer8(sparsed_feature7, geo_s5, geo_s5) # b 256 22 76
 
         # sparsed_feature8_plus = torch.cat([rgb_feature8_plus, sparsed_feature8], 1)
         # sparsed_feature9 = self.depth_layer9(sparsed_feature8_plus, geo_s5, geo_s6) # b 512 11 38
