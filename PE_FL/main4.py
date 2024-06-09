@@ -435,11 +435,11 @@ def main():
             # model = ENet(args)
             torch.cuda.empty_cache()
             if global_epoch in range(0,2): # 0,1
-                print("subnetwork_1".format(global_epoch))
+                print("subnetwork_1")
                 model = Subnet_1(args).to(device)
                 
             elif global_epoch in range(2,4): # 2, 3
-                print("subnetwork_2".format(global_epoch))
+                print("subnetwork_2")
                 model = Subnet_2(args).to(device)
             
             elif global_epoch in range(4,6): # 4,5
@@ -505,7 +505,7 @@ def main():
                 
 
             print("=> starting main loop ...")
-            for epoch in range(1, 2):
+            for epoch in range(1, 6):
                 print("=> starting training user {} epoch {} ..".format(user,epoch))
                 iterate("train", args, train_loader, model, optimizer, logger, global_epoch)  # train for one epoch
                 
