@@ -402,7 +402,7 @@ class KittiDepth(data.Dataset):
     def __getraw__(self, index):
         rgb = rgb_read(self.paths['rgb'][index], self.args) if \
             (self.paths['rgb'][index] is not None and (self.args.use_rgb or self.args.use_g)) else None
-        if(self.args.d_lost == True):
+        if(self.args.d_lost == True and self.split == 'train'):
             sparse = depth_read(self.paths['d'][index].replace('/KITTI/','/KITTI2/'), self.args) if (self.paths['d'][index] is not None and self.args.use_d) else None
         else:
             sparse = depth_read(self.paths['d'][index], self.args) if (self.paths['d'][index] is not None and self.args.use_d) else None
