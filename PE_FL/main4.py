@@ -192,7 +192,22 @@ def iterate(mode, args, loader, model, optimizer, logger, epoch):
         lr = 0
 
     torch.cuda.empty_cache()
+    total_batches = len(loader)
+    stop_k = 1
+    if epoch in range(0, 2):
+        stop_k = 0.6
+    elif epoch in range(2, 4):
+        stop_k = 0.7
+    elif epoch in range(4, 6):
+        stop_k = 0.8
+    elif epoch in range(6, 8):
+        stop_k = 0.9
+    else:
+        stop_k = 1
     for i, batch_data in enumerate(loader):
+        if i >= stop_k * total_batches:
+            print("Reach the limit of {} total data, break traing".format(stop_k))
+            break
         dstart = time.time()
         batch_data = {
             key: val.to(device)
@@ -228,13 +243,13 @@ def iterate(mode, args, loader, model, optimizer, logger, epoch):
         # inter loss_param
         st1_loss, st2_loss, loss = 0, 0, 0
         w_st1, w_st2 = 0, 0
-        round1, round2, round3 = 0, 0, None   # 1, 3, None
-        if(actual_epoch <= round1):
-            w_st1, w_st2 = 0.2, 0.2
-        elif(actual_epoch <= round2):
-            w_st1, w_st2 = 0.05, 0.05
-        else:
-            w_st1, w_st2 = 0, 0
+        # round1, round2, round3 = 0, 0, None   # 1, 3, None
+        # if(actual_epoch <= round1):
+        #     w_st1, w_st2 = 0.2, 0.2
+        # elif(actual_epoch <= round2):
+        #     w_st1, w_st2 = 0.05, 0.05
+        # else:
+        #     w_st1, w_st2 = 0, 0
 
         if mode == 'train':
             # Loss 1: the direct depth supervision from ground truth label
