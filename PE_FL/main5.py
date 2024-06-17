@@ -214,7 +214,7 @@ def iterate(mode, args, loader, model, optimizer, logger, epoch):
         batch_data = {
             key: val.to(device)
             for key, val in batch_data.items() if val is not None
-        }             
+        }            
 
         gt = batch_data[
             'gt'] if mode != 'test_prediction' and mode != 'test_completion' else None
@@ -327,7 +327,7 @@ def average_weight(w):
     return w_avg
 
 def calculate_k(idx, all):
-    selected_values = [all[index] for index in idx]
+    selected_values = [all[index-1] for index in idx]
     exp_values = [math.exp(value) for value in selected_values]
     total = sum(exp_values)
     s1 = [total / exp_value for exp_value in exp_values]
@@ -345,13 +345,12 @@ def Weighted_weight(w, users, userState):
     max_index = length.index(max_value) # locate the longest file
     w_Weighted = copy.deepcopy(w[max_index])   # choose the longest weight file as base
     for key in w_Weighted.keys():
-        count =1
         for i in range(0, len(w)):
             if key in w[i]:
                 if i==max_index:
-                    w_Weighted[key] -= w[i][key] * (1-k[i])
+                    w_Weighted[key] -= w[i][key] - (w[i][key] * float(k[i]))
                 else:
-                    w_Weighted[key] += w[i][key] * k[i]
+                    w_Weighted[key] += (w[i][key] * float(k[i]))
         w_Weighted[key] = torch.div(w_Weighted[key],len(w))
     return w_Weighted
 
@@ -368,14 +367,14 @@ def calcualte_diff(w1, w2, limit):
     p2 = torch.cat([v.view(-1) for v in w2.values()])
     num_params = p1.size(0)
     lm = min(limit, num_params)
-    total_diff = torch.sum(torch.abs(p1[:lm]-p2[:lm])).item()
+    total_diff = (int(torch.sum(torch.abs(p1[:lm]-p2[:lm])).item())/500)
     return total_diff
 
 def getUser(userState, userNum):
     selected_indices = []
     while len(selected_indices) < userNum:
-        chosen_idx = random.choices(range(len(userState)), weights=userState, k=1)[0]
-        if chosen_idx not in selected_indices:
+        chosen_idx = random.choices(range(len(userState)), weights=userState, k=1)[0] + 1
+        if (chosen_idx not in selected_indices) and (chosen_idx > 10) :    #####  
             selected_indices.append(chosen_idx)
     return selected_indices
 
@@ -394,7 +393,7 @@ def main():
     is_eval = False
     parts_idx = range(1,51)
     global_weights =[]
-    user_state = [1000000] * 50  # to save every user's abs weight diff to global weights
+    user_state = [300] * 50  # to save every user's abs weight diff to global weights
 
     if args.evaluate:
         args_new = args
@@ -569,15 +568,23 @@ def main():
             print("local_weights saved! :D)")
             
             if(len(global_weights)!=0):
-                user_state[user] = calcualte_diff(lw, global_weights, 10000)
-                print("user_state:", user_state[user])
+                stateU = calcualte_diff(lw, global_weights, 10000)
+                if stateU < 500:
+                    user_state[user-1] = float(stateU)
+                else:
+                    user_state[user-1] = 500.0
+                    
+                # user_state[user] = calcualte_diff(lw, global_weights, 10000)
+                print("user_state:", user_state[user-1])
 
         
         # global_weights =average_weight(local_weights, users, user_state)
         if len(global_weights) !=0:
             global_weights = Weighted_weight(local_weights, users= users, userState= user_state)
+            print("Save Weighted weight")
         else:
             global_weights =average_weight(local_weights)
+            print("Save average Weight")
         end_time = time.time()
         cost_time = end_time - start_time
         # model.load_state_dict(global_weights)  ###
