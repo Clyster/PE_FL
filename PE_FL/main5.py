@@ -345,12 +345,14 @@ def Weighted_weight(w, users, userState):
     max_index = length.index(max_value) # locate the longest file
     w_Weighted = copy.deepcopy(w[max_index])   # choose the longest weight file as base
     for key in w_Weighted.keys():
+        w_Weighted[key] = 0
         for i in range(0, len(w)):
             if key in w[i]:
                 if i==max_index:
-                    w_Weighted[key] -= w[i][key] - (w[i][key] * float(k[i]))
-                else:
+                    # w_Weighted[key] -= (float(w[i][key]) - (float(w[i][key]) * float(k[i])))
                     w_Weighted[key] += (w[i][key] * float(k[i]))
+                # else:
+                #     w_Weighted[key] += (w[i][key] * float(k[i]))
         w_Weighted[key] = torch.div(w_Weighted[key],len(w))
     return w_Weighted
 
@@ -457,7 +459,7 @@ def main():
     for global_epoch in range(args.start_epoch,(args.epochs)+1):
         print("Global epoch:",global_epoch)
         # users = random.sample(parts_idx, 10)  # debug 1
-        users = getUser(user_state, 10)
+        users = getUser(user_state, 2)
         print("this round choose user:", users)
         local_weights =[]
         start_time = time.time()
