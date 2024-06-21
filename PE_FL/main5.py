@@ -171,7 +171,7 @@ else:
 print("=> using '{}' for computation.".format(device))
 
 # define loss functions
-depth_criterion = criteria.HuberLoss() 
+depth_criterion = criteria.Huber_MSE() 
 
 #multi batch
 multi_batch_size = 1
@@ -376,7 +376,7 @@ def getUser(userState, userNum):
     selected_indices = []
     while len(selected_indices) < userNum:
         chosen_idx = random.choices(range(len(userState)), weights=userState, k=1)[0] + 1
-        if (chosen_idx not in selected_indices) and (chosen_idx > 10) :    #####  
+        if (chosen_idx not in selected_indices):    #####  
             selected_indices.append(chosen_idx)
     return selected_indices
 
@@ -459,7 +459,7 @@ def main():
     for global_epoch in range(args.start_epoch,(args.epochs)+1):
         print("Global epoch:",global_epoch)
         # users = random.sample(parts_idx, 10)  # debug 1
-        users = getUser(user_state, 2)
+        users = getUser(user_state, 10)
         print("this round choose user:", users)
         local_weights =[]
         start_time = time.time()
@@ -580,13 +580,14 @@ def main():
                 print("user_state:", user_state[user-1])
 
         
-        # global_weights =average_weight(local_weights, users, user_state)
-        if len(global_weights) !=0:
-            global_weights = Weighted_weight(local_weights, users= users, userState= user_state)
-            print("Save Weighted weight")
-        else:
-            global_weights =average_weight(local_weights)
-            print("Save average Weight")
+        global_weights =average_weight(local_weights)
+        # if len(global_weights) !=0:
+        #     global_weights = Weighted_weight(local_weights, users= users, userState= user_state)
+        #     print("Save Weighted weight")
+        # else:
+        #     global_weights =average_weight(local_weights)
+        #     print("Save average Weight")
+
         end_time = time.time()
         cost_time = end_time - start_time
         # model.load_state_dict(global_weights)  ###
