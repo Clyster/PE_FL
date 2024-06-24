@@ -30,7 +30,7 @@ class MaskedL1Loss(nn.Module):
     
 
 class HuberLoss(nn.Module):
-    def __init__(self, delta=20):  # 290开根号
+    def __init__(self, delta=19):  # 290开根号
         super(HuberLoss, self).__init__()
         self.delta = delta
 
@@ -46,7 +46,6 @@ class HuberLoss(nn.Module):
         large_error_loss = self.delta * (torch.abs(error) - 0.5 * self.delta)
         self.loss = torch.where(is_small_error, small_error_loss, large_error_loss)
         return self.loss.mean()
-    
 
 class LogCoshLoss(nn.Module):
     def __init__(self):
@@ -59,10 +58,10 @@ class LogCoshLoss(nn.Module):
         diff = diff[valid_mask]
         self.loss = torch.log(torch.cosh(diff))
         return self.loss.mean()
-
-class Huber_MSE(nn.Module):
+    
+class Huber_Combine(nn.Module):
     def __init__(self, delta=20):  # 290开根号
-        super(HuberLoss, self).__init__()
+        super(Huber_MSE, self).__init__()
         self.delta = delta
 
     def forward(self, pred, target):
