@@ -1,31 +1,21 @@
 import re
 
 def extract_summary_from_log(log_file_path):
-    # 定义完整的正则表达式以匹配所需的总结性文本块
-    summary_pattern = re.compile(
-        r'\*\nSummary of\s+val\s+round\s*\n'
-        r'RMSE=(.*?)\n'
-        r'MAE=(.*?)\n'
-        r'Photo=(.*?)\n'
-        r'iRMSE=(.*?)\n'
-        r'iMAE=(.*?)\n'
-        r'squared_rel=(.*?)\n'
-        r'silog=(.*?)\n'
-        r'Delta1=(.*?)\n'
-        r'REL=(.*?)\n'
-        r'Lg10=(.*?)\n'
-        r't_GPU=(.*?)\n'
-        r'New best model by rmse \(was (.*?)\)\n'
-        r'\*\n'
-        r'Global weights: global epoch (\d+) Saved!',
-        re.DOTALL
-    )
-    
-    with open(log_file_path, 'r') as file:
-        log_content = file.read()
+    summaries = []
 
-    # 使用正则表达式查找所有匹配的总结性文本块
-    summaries = summary_pattern.findall(log_content)
+    with open(log_file_path, 'r') as file:
+        lines = file.readlines()
+
+    # 搜索 "Summary of val round" 并捕获接下来的 15 行
+    i = 0
+    while i < len(lines):
+        if "Summary of  val round" in lines[i]:
+            # 捕获当前行和接下来的 15 行
+            summary = ''.join(lines[i:i+16])
+            summaries.append(summary)
+            i += 16  # 跳过已经捕获的行
+        else:
+            i += 1
 
     return summaries
 
