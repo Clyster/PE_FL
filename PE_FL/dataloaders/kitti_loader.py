@@ -24,12 +24,12 @@ def load_calib():
 
     Proj_str = P_rect_line.split(":")[1].split(" ")[1:]
     Proj = np.reshape(np.array([float(p) for p in Proj_str]),
-                      (3, 4)).astype(np.float32)
+                      (3, 4)).astype('float')
     K = Proj[:3, :3]  # camera matrix
 
     # note: we will take the center crop of the images during augmentation
     # that changes the optical centers, but not focal lengths
-    # K[0, 2] = K[0, 2] - 13  # from width = 1242 to 1216, with a 13-pixel cut on both sidesgt
+    # K[0, 2] = K[0, 2] - 13  # from width = 1242 to 1216, with a 13-pixel cut on both sides
     # K[1, 2] = K[1, 2] - 11.5  # from width = 375 to 352, with a 11.5-pixel cut on both sides
     K[0, 2] = K[0, 2] - 13;
     K[1, 2] = K[1, 2] - 11.5;
@@ -43,46 +43,24 @@ def get_paths_and_transform(split, args):
     if split == "train":
         transform = train_transform
         # transform = val_transform
-        paths_with_titles =[]
-        glob_d = []
-        glob_gt = []
-        rgb = []
-        with open(f"../parts/selected_part_{args.round}.txt","r")as file:
-            print("success open part_",args.round)
-            for line in file:
-                line = line.strip()
-                if line.endswith(':'):
-                    current_title = line[0:-1]
-                elif line:
-                    paths_with_titles.append((current_title, line))
-        
-        for title, path in paths_with_titles:
-            if title == 'd':
-                glob_d.append(path)
-            if title == 'gt':
-                glob_gt.append(path)
-            if title == 'rgb':
-                rgb.append(path)
-                
-        assert glob_d, "Fail to locate dataset from your txt file. Please check your code!!!!!"    
-        # glob_d = os.path.join(
-        #     args.data_folder,
-        #     'data_depth_velodyne/train/*_sync/proj_depth/velodyne_raw/image_0[2,3]/*.png'
-        # )
-        # glob_gt = os.path.join(
-        #     args.data_folder,
-        #     'data_depth_annotated/train/*_sync/proj_depth/groundtruth/image_0[2,3]/*.png'
-        # )
+        glob_d = os.path.join(
+            args.data_folder,
+            'data_depth_velodyne/train/*_sync/proj_depth/velodyne_raw/image_0[2,3]/*.png'
+        )
+        glob_gt = os.path.join(
+            args.data_folder,
+            'data_depth_annotated/train/*_sync/proj_depth/groundtruth/image_0[2,3]/*.png'
+        )
 
         def get_rgb_paths(p):
-            # ps = p.split('/')
-            # date_liststr = []
-            # date_liststr.append(ps[-5][:10])
-            # # pnew = '/'.join([args.data_folder] + ['data_rgb'] + ps[-6:-4] +
-            # #                ps[-2:-1] + ['data'] + ps[-1:])
-            # pnew = '/'.join(date_liststr + ps[-5:-4] + ps[-2:-1] + ['data'] + ps[-1:])
-            # pnew = os.path.join(args.data_folder_rgb, pnew)
-            return rgb
+            ps = p.split('/')
+            date_liststr = []
+            date_liststr.append(ps[-5][:10])
+            # pnew = '/'.join([args.data_folder] + ['data_rgb'] + ps[-6:-4] +
+            #                ps[-2:-1] + ['data'] + ps[-1:])
+            pnew = '/'.join(date_liststr + ps[-5:-4] + ps[-2:-1] + ['data'] + ps[-1:])
+            pnew = os.path.join(args.data_folder_rgb, pnew)
+            return pnew
     elif split == "val":
         if args.val == "full":
             transform = val_transform
@@ -138,15 +116,11 @@ def get_paths_and_transform(split, args):
     else:
         raise ValueError("Unrecognized split " + str(split))
 
-    if glob_gt is not None and split!='train':
+    if glob_gt is not None:
         # train or val-full or val-select
         paths_d = sorted(glob.glob(glob_d))
         paths_gt = sorted(glob.glob(glob_gt))
         paths_rgb = [get_rgb_paths(p) for p in paths_gt]
-    elif glob_gt is not None and split =='train':
-        paths_d = glob_d
-        paths_gt = glob_gt
-        paths_rgb = get_rgb_paths(1)
     else:
         # test only has d or rgb
         paths_rgb = sorted(glob.glob(glob_rgb))
@@ -198,7 +172,7 @@ def depth_read(filename):
     assert np.max(depth_png) > 255, \
         "np.max(depth_png)={}, path={}".format(np.max(depth_png), filename)
 
-    depth = depth_png.astype(np.float) / 256.
+    depth = depth_png.astype('float') / 256.
     # depth[depth_png == 0] = -1.
     depth = np.expand_dims(depth, -1)
     return depth
