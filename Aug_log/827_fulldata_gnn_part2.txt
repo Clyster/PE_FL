@@ -1,0 +1,114 @@
+Summary of  val round
+RMSE=855.817
+MAE=240.859
+Photo=0.000
+iRMSE=inf
+iMAE=inf
+squared_rel=0.0031609689587057802
+silog=nan
+Delta1=0.997
+REL=0.014
+Lg10=inf
+t_GPU=0.004
+(best rmse is 830.236)
+*
+
+=> starting training epoch 6 ..
+loss: tensor(0.4808, device='cuda:0', grad_fn=<AddBackward0>)  epoch: 6   0 / 14317
+
+
+Summary of  val round
+RMSE=818.750
+MAE=231.174
+Photo=0.000
+iRMSE=inf
+iMAE=inf
+squared_rel=0.001806842463760404
+silog=nan
+Delta1=0.997
+REL=0.013
+Lg10=inf
+t_GPU=0.004
+New best model by rmse (was 830.236)
+*
+
+=> starting training epoch 7 ..
+loss: tensor(0.5230, device='cuda:0', grad_fn=<AddBackward0>)  epoch: 7   0 / 14317
+
+
+Summary of  val round
+RMSE=827.575
+MAE=241.722
+Photo=0.000
+iRMSE=inf
+iMAE=inf
+squared_rel=0.0013907469149853568
+silog=nan
+Delta1=0.997
+REL=0.014
+Lg10=inf
+t_GPU=0.004
+(best rmse is 818.750)
+*
+
+=> starting training epoch 8 ..
+loss: tensor(0.3445, device='cuda:0', grad_fn=<AddBackward0>)  epoch: 8   0 / 14317
+
+
+Summary of  val round
+RMSE=810.117
+MAE=226.868
+Photo=0.000
+iRMSE=2.403
+iMAE=1.004
+squared_rel=0.001357654605046264
+silog=2.925615385133078
+Delta1=0.998
+REL=0.012
+Lg10=0.005
+t_GPU=0.004
+New best model by rmse (was 818.750)
+*
+
+=> starting training epoch 9 ..
+loss: tensor(0.3303, device='cuda:0', grad_fn=<AddBackward0>)  epoch: 9   0 / 14317
+
+
+Summary of  val round
+RMSE=800.410
+MAE=227.441
+Photo=0.000
+iRMSE=2.413
+iMAE=1.012
+squared_rel=0.001365542034516693
+silog=2.9089796421842835
+Delta1=0.998
+REL=0.012
+Lg10=0.005
+t_GPU=0.004
+New best model by rmse (was 810.117)
+*
+
+=> starting training epoch 10 ..
+loss: tensor(0.4267, device='cuda:0', grad_fn=<AddBackward0>)  epoch: 10   0 / 14317
+
+
+Summary of  val round
+RMSE=821.862
+MAE=237.043
+Photo=0.000
+iRMSE=2.493
+iMAE=1.084
+squared_rel=0.0013472002133057685
+silog=2.952339974042749
+Delta1=0.998
+REL=0.013
+Lg10=0.006
+t_GPU=0.004
+(best rmse is 800.410)
+*
+
+=> starting training epoch 11 ..
+loss: tensor(0.3999, device='cuda:0', grad_fn=<AddBackward0>)  epoch: 11   0 / 14317
+
+
