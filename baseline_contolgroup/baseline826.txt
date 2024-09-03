@@ -1,75 +1,93 @@
-Summary 1:
-RMSE: S
-MAE: u
-Photo: m
-iRMSE: m
-iMAE: a
-squared_rel: r
-silog: y
-Delta1:  
-REL: o
-Lg10: f
-t_GPU:  
-Previous best RMSE:  
-Global epoch: v
+Summary of  val round
+RMSE=1138.604
+MAE=339.320
+Photo=0.000
+iRMSE=inf
+iMAE=inf
+squared_rel=0.002071233249182114
+silog=nan
+Delta1=0.994
+REL=0.018
+Lg10=inf
+t_GPU=0.003
+New best model by rmse (was inf)
+*
 
-Summary 2:
-RMSE: S
-MAE: u
-Photo: m
-iRMSE: m
-iMAE: a
-squared_rel: r
-silog: y
-Delta1:  
-REL: o
-Lg10: f
-t_GPU:  
-Previous best RMSE:  
-Global epoch: v
+=> starting training epoch 1 ..
+loss: tensor(0.8481, device='cuda:0', grad_fn=<AddBackward0>)  epoch: 1   0 / 14317
 
-Summary 3:
-RMSE: S
-MAE: u
-Photo: m
-iRMSE: m
-iMAE: a
-squared_rel: r
-silog: y
-Delta1:  
-REL: o
-Lg10: f
-t_GPU:  
-Previous best RMSE:  
-Global epoch: v
 
-Summary 4:
-RMSE: S
-MAE: u
-Photo: m
-iRMSE: m
-iMAE: a
-squared_rel: r
-silog: y
-Delta1:  
-REL: o
-Lg10: f
-t_GPU:  
-Previous best RMSE:  
-Global epoch: v
+Summary of  val round
+RMSE=1053.383
+MAE=422.957
+Photo=0.000
+iRMSE=inf
+iMAE=inf
+squared_rel=0.0022237984394305388
+silog=nan
+Delta1=0.996
+REL=0.023
+Lg10=inf
+t_GPU=0.003
+New best model by rmse (was 1138.604)
+*
 
-Summary 5:
-RMSE: S
-MAE: u
-Photo: m
-iRMSE: m
-iMAE: a
-squared_rel: r
-silog: y
-Delta1:  
-REL: o
-Lg10: f
-t_GPU:  
-Previous best RMSE:  
-Global epoch: v
+=> starting training epoch 2 ..
+loss: tensor(0.8220, device='cuda:0', grad_fn=<AddBackward0>)  epoch: 2   0 / 14317
+
+
+Summary of  val round
+RMSE=867.845
+MAE=269.370
+Photo=0.000
+iRMSE=3.107
+iMAE=1.208
+squared_rel=0.0016978422801330452
+silog=3.23465975138398
+Delta1=0.997
+REL=0.015
+Lg10=0.006
+t_GPU=0.003
+New best model by rmse (was 1053.383)
+*
+
+=> starting training epoch 3 ..
+loss: tensor(0.4939, device='cuda:0', grad_fn=<AddBackward0>)  epoch: 3   0 / 14317
+
+
+Summary of  val round
+RMSE=865.835
+MAE=284.317
+Photo=0.000
+iRMSE=2.757
+iMAE=1.321
+squared_rel=0.001736055916553596
+silog=3.1540127647167973
+Delta1=0.997
+REL=0.016
+Lg10=0.007
+t_GPU=0.003
+New best model by rmse (was 867.845)
+*
+
+=> starting training epoch 4 ..
+loss: tensor(0.4728, device='cuda:0', grad_fn=<AddBackward0>)  epoch: 4   0 / 14317
+
+
+Summary of  val round
+RMSE=937.660
+MAE=391.208
+Photo=0.000
+iRMSE=3.328
+iMAE=2.010
+squared_rel=0.0018640143435914068
+silog=3.1422404565594833
+Delta1=0.997
+REL=0.023
+Lg10=0.010
+t_GPU=0.003
+(best rmse is 865.835)
+*
+
+
 
