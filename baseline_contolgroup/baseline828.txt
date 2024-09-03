@@ -1,0 +1,60 @@
+Summary 1:
+RMSE: S
+MAE: u
+Photo: m
+iRMSE: m
+iMAE: a
+squared_rel: r
+silog: y
+Delta1:  
+REL: o
+Lg10: f
+t_GPU:  
+Previous best RMSE:  
+Global epoch: v
+
+Summary 2:
+RMSE: S
+MAE: u
+Photo: m
+iRMSE: m
+iMAE: a
+squared_rel: r
+silog: y
+Delta1:  
+REL: o
+Lg10: f
+t_GPU:  
+Previous best RMSE:  
+Global epoch: v
+
+Summary 3:
+RMSE: S
+MAE: u
+Photo: m
+iRMSE: m
+iMAE: a
+squared_rel: r
+silog: y
+Delta1:  
+REL: o
+Lg10: f
+t_GPU:  
+Previous best RMSE:  
+Global epoch: v
+
+Summary 4:
+RMSE: S
+MAE: u
+Photo: m
+iRMSE: m
+iMAE: a
+squared_rel: r
+silog: y
+Delta1:  
+REL: o
+Lg10: f
+t_GPU:  
+Previous best RMSE:  
+Global epoch: v
+
