@@ -1,0 +1,38 @@
+Summary of  val round
+RMSE=819.927
+MAE=228.964
+Photo=0.000
+iRMSE=2.526
+iMAE=1.042
+squared_rel=0.0014198971815785626
+silog=2.9933957747150566
+Delta1=0.997
+REL=0.013
+Lg10=0.005
+t_GPU=0.053
+(best rmse is 799.335)
+*
+
+=> starting training epoch 13 ..
+loss: tensor(0.6880, device='cuda:0', grad_fn=<MeanBackward0>)  epoch: 13   0 / 21475
+
+
+Summary of  val round
+RMSE=823.334
+MAE=229.105
+Photo=0.000
+iRMSE=2.373
+iMAE=0.998
+squared_rel=0.0013179318992479238
+silog=2.9157545253699553
+Delta1=0.998
+REL=0.012
+Lg10=0.005
+t_GPU=0.053
+(best rmse is 799.335)
+*
+
+=> starting training epoch 14 ..
+loss: tensor(0.2704, device='cuda:0', grad_fn=<MeanBackward0>)  epoch: 14   0 / 21475
+
+
