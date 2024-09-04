@@ -7,26 +7,27 @@ import torch.optim
 import torch.utils.data
 import time
 
-from dataloaders.kitti_loader import load_calib, input_options, KittiDepth
+from dataloaders.kitti_loader3 import load_calib, input_options, KittiDepth
 from metrics import AverageMeter, Result
 import criteria
 import helper
 import vis_utils
 
 from model3 import ENet
-from model import PENet_C1_train
-from model import PENet_C2_train
+from model3 import PENet_C1_train
+from model3 import PENet_C2_train
 #from model import PENet_C4_train (Not Implemented)
-from model import PENet_C1
-from model import PENet_C2
-from model import PENet_C4
-
+from model3 import PENet_C1
+from model3 import PENet_C2
+from model3 import PENet_C4
+# model3 use our desined model
+# kittiloader3 use 50% dataset while some of them are modal missing
 parser = argparse.ArgumentParser(description='Sparse-to-Dense')
 parser.add_argument('-n',
                     '--network-model',
                     type=str,
                     default="e",
-                    choices=["e", "pe"],
+                    choices=[ r"e", "pe"],
                     help='choose a model: enet or penet'
                     )
 parser.add_argument('--workers',
@@ -159,6 +160,8 @@ args.use_d = 'd' in args.input
 args.use_g = 'g' in args.input
 args.val_h = 352
 args.val_w = 1216
+args.part =50 # use % of the dataset
+args.modal_missing_rate = 0.2
 print(args)
 
 cuda = torch.cuda.is_available() and not args.cpu
