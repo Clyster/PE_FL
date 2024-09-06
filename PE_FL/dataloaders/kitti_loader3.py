@@ -193,20 +193,29 @@ def rgb_read(filename, args):
     return rgb_png
 
 
-def depth_read(filename, args):
+def depth_read(filename, args, modal_missing):
     # loads depth map D from png file
     # and returns it as a numpy array,
     # for details see readme.txt
     assert os.path.exists(filename), "file not found: {}".format(filename)
     img_file = Image.open(filename)
     depth_png = np.array(img_file, dtype=int)
-    img_file.close()
-    if random.random() < args.modal_missing_rate:
+    if modal_missing == True:
+        # new_size = (1242, 375)  # for cv2
+        # img_file = img_file.resize(new_size, Image.NEAREST)
         depth = np.zeros_like(depth_png)
     else:
-        depth = depth_png.astype('float') / 256.    # not 0 map
+        depth = depth_png.astype('float') / 256.  
+    img_file.close()
+    
  
-    # # make sure we have a proper 16bit depth map here.. not 8bit!
+    # if random.random() < args.modal_missing_rate:
+    #     depth = np.zeros_like(depth_png)
+    # else:
+    #     depth = depth_png.astype('float') / 256.    # not 0 map
+    # depth = depth_png.astype('float') / 256. 
+ 
+    # make sure we have a proper 16bit depth map here.. not 8bit!
     # assert np.max(depth_png) > 255, \
     #     "np.max(depth_png)={}, path={}".format(np.max(depth_png), filename)
 
@@ -402,10 +411,19 @@ class KittiDepth(data.Dataset):
         self.threshold_translation = 0.1
 
     def __getraw__(self, index):
+        modal_missing_rate = 1
+        if random.random() < modal_missing_rate:
+            modal_missing = True
+        else:
+            modal_missing = False
         rgb = rgb_read(self.paths['rgb'][index], self.args) if \
             (self.paths['rgb'][index] is not None and (self.args.use_rgb or self.args.use_g)) else None
-        sparse = depth_read(self.paths['d'][index], self.args) if \
-            (self.paths['d'][index] is not None and self.args.use_d) else None
+        if(modal_missing == True):
+            sparse = depth_read(self.paths['d'][index].replace('/KITTI/','/KITTI5/'), self.args, modal_missing) if (self.paths['d'][index] is not None and self.args.use_d) else None
+            print("KITTI4")
+        else:
+            sparse = depth_read(self.paths['d'][index], self.args, modal_missing) if (self.paths['d'][index] is not None and self.args.use_d) else None
+            print("KITTI0")
         target = gt_read(self.paths['gt'][index]) if \
             self.paths['gt'][index] is not None else None
         return rgb, sparse, target
