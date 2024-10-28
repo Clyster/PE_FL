@@ -11,13 +11,14 @@ import torch.optim
 import torch.utils.data
 import time
 
-from dataloaders.kitti_loader2 import load_calib, input_options, KittiDepth
+
+from dataloaders.kitti_loader4 import load_calib, input_options, KittiDepth
 from metrics import AverageMeter, Result
 import criteria
 import helper
 import vis_utils
 
-from model import ENet
+from model4 import ENet  # 3 branch
 from model2 import Subnet_1, Subnet_2, Subnet_3, Subnet_4
 import heapq
 
@@ -114,7 +115,7 @@ parser.add_argument('-i',
                     help='input: | '.join(input_options))
 parser.add_argument('--val',
                     type=str,
-                    default="select",
+                    default="full",
                     choices=["select", "full"],
                     help='full or select validation set')
 parser.add_argument('--jitter',
@@ -170,8 +171,12 @@ else:
     device = torch.device("cpu")
 print("=> using '{}' for computation.".format(device))
 
-# define loss functions
-depth_criterion = criteria.Huber_MSE() 
+# define l
+# 
+# .oss functions
+depth_criterion = criteria.Huber_Combine() 
+
+scaler = torch.cuda.amp.GradScaler()  #
 
 #multi batch
 multi_batch_size = 1
@@ -231,7 +236,8 @@ def iterate(mode, args, loader, model, optimizer, logger, epoch):
         #'''
         if(args.network_model == 'e'):
             start = time.time()
-            st1_pred, st2_pred, pred = model(batch_data)
+            with torch.cuda.amp.autocast():
+                st1_pred, st2_pred, pred = model(batch_data)
         else:
             start = time.time()
             pred = model(batch_data)
@@ -267,10 +273,12 @@ def iterate(mode, args, loader, model, optimizer, logger, epoch):
 
             if i % multi_batch_size == 0:
                 optimizer.zero_grad()
-            loss.backward()
+            scaler.scale(loss).backward()
 
             if i % multi_batch_size == (multi_batch_size-1) or i==(len(loader)-1):
-                optimizer.step()
+                #optimizer.step()
+                scaler.step(optimizer)
+                scaler.update()
             print("loss:", loss, " epoch:", epoch, " ", i, "/", len(loader))
 
         if mode == "test_completion":
@@ -369,14 +377,14 @@ def calcualte_diff(w1, w2, limit):
     p2 = torch.cat([v.view(-1) for v in w2.values()])
     num_params = p1.size(0)
     lm = min(limit, num_params)
-    total_diff = (int(torch.sum(torch.abs(p1[:lm]-p2[:lm])).item())/500)
+    total_diff = (int(torch.sum(torch.abs(p1[:lm]-p2[:lm])).item())/400)
     return total_diff
 
 def getUser(userState, userNum):
     selected_indices = []
     while len(selected_indices) < userNum:
         chosen_idx = random.choices(range(len(userState)), weights=userState, k=1)[0] + 1
-        if (chosen_idx not in selected_indices):    #####  
+        if (chosen_idx not in selected_indices) and (chosen_idx > 10):    #####  
             selected_indices.append(chosen_idx)
     return selected_indices
 
@@ -395,7 +403,7 @@ def main():
     is_eval = False
     parts_idx = range(1,51)
     global_weights =[]
-    user_state = [300] * 50  # to save every user's abs weight diff to global weights
+    user_state = [499] * 50  # to save every user's abs weight diff to global weights
 
     if args.evaluate:
         args_new = args
@@ -458,8 +466,8 @@ def main():
     
     for global_epoch in range(args.start_epoch,(args.epochs)+1):
         print("Global epoch:",global_epoch)
-        # users = random.sample(parts_idx, 10)  # debug 1
-        users = getUser(user_state, 10)
+        users = random.sample(parts_idx, 10)  # debug 1
+        # users = getUser(user_state, 10)
         print("this round choose user:", users)
         local_weights =[]
         start_time = time.time()
@@ -472,39 +480,42 @@ def main():
             # user = 2  # debug only!
             args.round = user
             print("This is {} user-------------".format(args.round))
-            if user in range(1,11):  # 20 only lost depth
-                print("WARNING! Start simulate modal missing!")
-                modal_lost = True 
-                args.d_lost, args.rgb_lost = random_lost()
-                # args.d_lost = True
-                print("depth lost:{} rgb lost:{}".format(args.d_lost, args.rgb_lost))
-            else:
-                args.d_lost = False
-                args.rgb_lost = False
+            # if user in range(1,11):  # 20 only lost depth
+            #     print("WARNING! Start simulate modal missing!")
+            #     modal_lost = True 
+            #     args.d_lost, args.rgb_lost = random_lost()
+            #     # args.d_lost = True # debug only!
+            #     print("depth lost:{} rgb lost:{}".format(args.d_lost, args.rgb_lost))
+            # else:
+            #     args.d_lost = False
+            #     args.rgb_lost = False
             
             # rebuild model every user
             print("=> creating model and optimizer ... ", end='')
             # model
             # model = ENet(args)
-            torch.cuda.empty_cache()
-            if global_epoch in range(0,2): # 0,1
-                print("subnetwork_1")
-                model = Subnet_1(args).to(device)
+            model = None          
+            penet_accelerated = False
+            torch.cuda.empty_cache() 
+            model = ENet(args).to(device)    # DEBUG
+            # if global_epoch in range(0,2): # 0,1
+            #     print("subnetwork_1")
+            #     model = Subnet_1(args).to(device)
                 
-            elif global_epoch in range(2,4): # 2, 3
-                print("subnetwork_2")
-                model = Subnet_2(args).to(device)
+            # elif global_epoch in range(2,4): # 2, 3
+            #     print("subnetwork_2")
+            #     model = Subnet_2(args).to(device)
             
-            elif global_epoch in range(4,6): # 4,5
-                print("subnetwork_3")
-                model = Subnet_3(args).to(device)
+            # elif global_epoch in range(4,6): # 4,5
+            #     print("subnetwork_3")
+            #     model = Subnet_3(args).to(device)
             
-            elif global_epoch in range(6,8): # 6,7
-                print("subnetwork_4")
-                model = Subnet_4(args).to(device)
-            else:
-                print("Start Enet now!")
-                model = ENet(args).to(device)
+            # elif global_epoch in range(6,8): # 6,7
+            #     print("subnetwork_4")
+            #     model = Subnet_4(args).to(device)
+            # else:
+            #     print("Start Enet now!")
+            #     model = ENet(args).to(device)
             
             
 
@@ -546,7 +557,7 @@ def main():
             if not is_eval:
                 if modal_lost == True:
                     print("Modal Missing!Dataset will be replaced by zero matrix in iterate()!!!!!!!!!!!!")
-                train_dataset = KittiDepth('train', args)
+                train_dataset = KittiDepth('train', args, epoch=global_epoch)
                 train_loader = torch.utils.data.DataLoader(train_dataset,
                                                         batch_size=args.batch_size,
                                                         shuffle=True,
@@ -566,7 +577,7 @@ def main():
                     p.requires_grad = True
             lw = copy.deepcopy(model.module.state_dict())
             local_weights.append(lw)
-            assert copy.deepcopy(model.module.state_dict()), "local_weights MISSING!!! Check CODE!!!!!"
+            assert lw, "local_weights MISSING!!! Check CODE!!!!!"
             print("local_weights saved! :D)")
             
             if(len(global_weights)!=0):
