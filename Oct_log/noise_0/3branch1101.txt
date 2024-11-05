@@ -1,0 +1,114 @@
+Summary of  val round
+RMSE=2071.837
+MAE=732.349
+Photo=0.000
+iRMSE=6.243
+iMAE=2.419
+squared_rel=0.008458482400990992
+silog=6.977147383344813
+Delta1=0.985
+REL=0.033
+Lg10=0.014
+t_GPU=0.006
+New best model by rmse (was inf)
+*
+
+Time consumption:4547.240619182587
+Global weights: global epoch 9 Saved!
+
+
+Summary of  val round
+RMSE=1903.383
+MAE=604.767
+Photo=0.000
+iRMSE=6.298
+iMAE=2.472
+squared_rel=0.009948225742765559
+silog=6.694625139611407
+Delta1=0.987
+REL=0.031
+Lg10=0.013
+t_GPU=0.006
+New best model by rmse (was 2071.837)
+*
+
+Time consumption:4537.1908547878265
+Global weights: global epoch 10 Saved!
+
+
+Summary of  val round
+RMSE=2911.575
+MAE=1256.714
+Photo=0.000
+iRMSE=47.815
+iMAE=8.669
+squared_rel=0.014569349959621808
+silog=11.93923224247003
+Delta1=0.934
+REL=0.075
+Lg10=0.036
+t_GPU=0.006
+(best rmse is 1903.383)
+*
+
+Time consumption:4535.94504070282
+Global weights: global epoch 11 Saved!
+
+
+Summary of  val round
+RMSE=1175.373
+MAE=386.133
+Photo=0.000
+iRMSE=4.691
+iMAE=2.092
+squared_rel=0.00472428481972853
+silog=4.800281563180029
+Delta1=0.993
+REL=0.023
+Lg10=0.010
+t_GPU=0.006
+New best model by rmse (was 1903.383)
+*
+
+Time consumption:4537.823261976242
+Global weights: global epoch 12 Saved!
+
+
+Summary of  val round
+RMSE=1302.714
+MAE=498.904
+Photo=0.000
+iRMSE=6.194
+iMAE=2.963
+squared_rel=0.0035804026686237535
+silog=5.2169741302117645
+Delta1=0.990
+REL=0.030
+Lg10=0.013
+t_GPU=0.006
+(best rmse is 1175.373)
+*
+
+Time consumption:4528.774358987808
+Global weights: global epoch 13 Saved!
+
+
+Summary of  val round
+RMSE=1976.608
+MAE=630.432
+Photo=0.000
+iRMSE=7.597
+iMAE=2.880
+squared_rel=0.005766697788615608
+silog=7.492815902376211
+Delta1=0.986
+REL=0.033
+Lg10=0.015
+t_GPU=0.006
+(best rmse is 1175.373)
+*
+
+Time consumption:4527.415563821793
+Global weights: global epoch 14 Saved!
+
+
