@@ -175,6 +175,7 @@ print("=> using '{}' for computation.".format(device))
 # 
 # .oss functions
 depth_criterion = criteria.Huber_Combine() 
+cl_criterion = criteria.info_nce_loss_depth_maps() 
 
 scaler = torch.cuda.amp.GradScaler()  #
 
@@ -237,7 +238,7 @@ def iterate(mode, args, loader, model, optimizer, logger, epoch):
         if(args.network_model == 'e'):
             start = time.time()
             with torch.cuda.amp.autocast():
-                st1_pred, st2_pred, pred = model(batch_data)
+                rgb_pred, depth1_pred, depth2_pred, pred = model(batch_data)
         else:
             start = time.time()
             pred = model(batch_data)
@@ -249,8 +250,8 @@ def iterate(mode, args, loader, model, optimizer, logger, epoch):
         depth_loss, photometric_loss, smooth_loss, mask = 0, 0, 0, None
 
         # inter loss_param
-        st1_loss, st2_loss, loss = 0, 0, 0
-        w_st1, w_st2 = 0, 0
+        cl_loss, loss = 0, 0
+
         # round1, round2, round3 = 0, 0, None   # 1, 3, None
         # if(actual_epoch <= round1):
         #     w_st1, w_st2 = 0.2, 0.2
@@ -263,11 +264,9 @@ def iterate(mode, args, loader, model, optimizer, logger, epoch):
             # Loss 1: the direct depth supervision from ground truth label
             # mask=1 indicates that a pixel does not ground truth labels
             depth_loss = depth_criterion(pred, gt)
-
+            cl_loss = cl_criterion(depth1_pred, depth2_pred)
             if args.network_model == 'e':
-                st1_loss = depth_criterion(st1_pred, gt)
-                st2_loss = depth_criterion(st2_pred, gt)
-                loss = (1 - w_st1 - w_st2) * depth_loss + w_st1 * st1_loss + w_st2 * st2_loss
+                loss = cl_loss + depth_loss
             else:
                 loss = depth_loss
 
@@ -471,6 +470,7 @@ def main():
         print("this round choose user:", users)
         local_weights =[]
         start_time = time.time()
+        user_state_list = []    # to save every user's abs weight diff to global weights
         for user in users:
             
             # modal lost controller
@@ -589,8 +589,12 @@ def main():
                     
                 # user_state[user] = calcualte_diff(lw, global_weights, 10000)
                 print("user_state:", user_state[user-1])
+                user_state_list.append(user_state[user-1])
 
-        
+        if global_epoch in range(2,10):    # acclearting the convergence
+            max_error = max(user_state_list)
+            max_index = user_state_list.index(max_error)
+            del local_weights[max_index]
         global_weights =average_weight(local_weights)
         # if len(global_weights) !=0:
         #     global_weights = Weighted_weight(local_weights, users= users, userState= user_state)
