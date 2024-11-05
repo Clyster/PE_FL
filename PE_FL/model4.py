@@ -323,7 +323,7 @@ class ENet(nn.Module):
         output = rgb_conf*rgb_depth + d_conf*d_depth + d_conf2*d_depth2
 
         if(self.args.network_model == 'e'):
-            return rgb_depth, d_depth, output
+            return rgb_depth, d_depth, d_depth2, output
         elif(self.args.dilation_rate == 1):
             return torch.cat((rgb_feature0_plus, decoder_feature5),1), output
         elif (self.args.dilation_rate == 2):
