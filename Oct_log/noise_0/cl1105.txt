@@ -1,0 +1,38 @@
+Summary of  val round
+RMSE=17191.819
+MAE=13699.764
+Photo=0.000
+iRMSE=inf
+iMAE=inf
+squared_rel=0.7514384831754846
+silog=nan
+Delta1=0.000
+REL=0.862
+Lg10=inf
+t_GPU=0.006
+New best model by rmse (was inf)
+*
+
+Time consumption:2855.596402168274
+Global weights: global epoch 0 Saved!
+
+
+Summary of  val round
+RMSE=15709.376
+MAE=12219.200
+Photo=0.000
+iRMSE=621.857
+iMAE=393.914
+squared_rel=0.5779969846460142
+silog=52.42789999659527
+Delta1=0.000
+REL=0.753
+Lg10=0.658
+t_GPU=0.006
+New best model by rmse (was 17191.819)
+*
+
+Time consumption:2847.223819732666
+Global weights: global epoch 1 Saved!
+
+
