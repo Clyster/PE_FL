@@ -1,0 +1,133 @@
+Summary of  val round
+RMSE=1176.807
+MAE=413.216
+Photo=0.000
+iRMSE=4.524
+iMAE=2.159
+squared_rel=0.003344112554005694
+silog=4.542052190797065
+Delta1=0.994
+REL=0.024
+Lg10=0.010
+t_GPU=0.006
+New best model by rmse (was inf)
+*
+
+Time consumption:4654.993172168732
+Global weights: global epoch 17 Saved!
+
+
+Summary of  val round
+RMSE=1168.058
+MAE=450.126
+Photo=0.000
+iRMSE=4.650
+iMAE=2.400
+squared_rel=0.003236729069213656
+silog=4.750517899093531
+Delta1=0.994
+REL=0.027
+Lg10=0.012
+t_GPU=0.006
+New best model by rmse (was 1176.807)
+*
+
+Time consumption:4618.757514953613
+Global weights: global epoch 18 Saved!
+
+
+Summary of  val round
+RMSE=1196.680
+MAE=391.279
+Photo=0.000
+iRMSE=5.090
+iMAE=2.071
+squared_rel=0.00577261623444642
+silog=5.050764588273204
+Delta1=0.991
+REL=0.023
+Lg10=0.010
+t_GPU=0.006
+(best rmse is 1168.058)
+*
+
+Time consumption:4609.141328334808
+Global weights: global epoch 19 Saved!
+
+
+Summary of  val round
+RMSE=1230.599
+MAE=408.088
+Photo=0.000
+iRMSE=4.546
+iMAE=2.020
+squared_rel=0.004068933092826671
+silog=4.771821023705393
+Delta1=0.993
+REL=0.023
+Lg10=0.010
+t_GPU=0.006
+(best rmse is 1168.058)
+*
+
+Time consumption:4606.341112852097
+Global weights: global epoch 20 Saved!
+
+
+Summary of  val round
+RMSE=1208.456
+MAE=547.844
+Photo=0.000
+iRMSE=5.373
+iMAE=3.307
+squared_rel=0.005035228131610657
+silog=4.4191158178106855
+Delta1=0.994
+REL=0.036
+Lg10=0.015
+t_GPU=0.006
+(best rmse is 1168.058)
+*
+
+Time consumption:4606.100219011307
+Global weights: global epoch 21 Saved!
+
+
+Summary of  val round
+RMSE=1305.275
+MAE=408.652
+Photo=0.000
+iRMSE=4.468
+iMAE=2.214
+squared_rel=0.002685621250773181
+silog=4.691073703531068
+Delta1=0.994
+REL=0.024
+Lg10=0.010
+t_GPU=0.006
+(best rmse is 1168.058)
+*
+
+Time consumption:4605.742106676102
+Global weights: global epoch 22 Saved!
+
+
+Summary of  val round
+RMSE=1125.716
+MAE=484.970
+Photo=0.000
+iRMSE=5.176
+iMAE=2.979
+squared_rel=0.0035619234133728436
+silog=4.328304848942162
+Delta1=0.995
+REL=0.032
+Lg10=0.014
+t_GPU=0.006
+New best model by rmse (was 1168.058)
+*
+
+Time consumption:4603.531859874725
+Global weights: global epoch 23 Saved!
+
+
