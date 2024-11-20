@@ -1,0 +1,19 @@
+Summary of  val round
+RMSE=5053.661
+MAE=2810.050
+Photo=0.000
+iRMSE=inf
+iMAE=inf
+squared_rel=0.038471317297131505
+silog=nan
+Delta1=0.763
+REL=0.163
+Lg10=inf
+t_GPU=0.006
+New best model by rmse (was inf)
+*
+
+Time consumption:4741.333281993866
+Global weights: global epoch 8 Saved!
+
+
