@@ -36,7 +36,119 @@ def load_calib():
     K[0, 2] = K[0, 2] - 13;
     K[1, 2] = K[1, 2] - 11.5;
     return K
+def get_paths_and_transform_full(split, args):
+    assert (args.use_d or args.use_rgb
+            or args.use_g), 'no proper input selected'
 
+    if split == "train":
+        transform = train_transform
+        # transform = val_transform
+        glob_d = os.path.join(
+            args.data_folder,
+            'data_depth_velodyne/train/*_sync/proj_depth/velodyne_raw/image_0[2,3]/*.png'
+        )
+        glob_gt = os.path.join(
+            args.data_folder,
+            'data_depth_annotated/train/*_sync/proj_depth/groundtruth/image_0[2,3]/*.png'
+        )
+
+        def get_rgb_paths(p):
+            ps = p.split('/')
+            date_liststr = []
+            date_liststr.append(ps[-5][:10])
+            # pnew = '/'.join([args.data_folder] + ['data_rgb'] + ps[-6:-4] +
+            #                ps[-2:-1] + ['data'] + ps[-1:])
+            pnew = '/'.join(date_liststr + ps[-5:-4] + ps[-2:-1] + ['data'] + ps[-1:])
+            pnew = os.path.join(args.data_folder_rgb, pnew)
+            return pnew
+    elif split == "val":
+        if args.val == "full":
+            transform = val_transform
+            glob_d = os.path.join(
+                args.data_folder,
+                'data_depth_velodyne/val/*_sync/proj_depth/velodyne_raw/image_0[2,3]/*.png'
+            )
+            glob_gt = os.path.join(
+                args.data_folder,
+                'data_depth_annotated/val/*_sync/proj_depth/groundtruth/image_0[2,3]/*.png'
+            )
+
+            def get_rgb_paths(p):
+                ps = p.split('/')
+                date_liststr = []
+                date_liststr.append(ps[-5][:10])
+                # pnew = '/'.join(ps[:-7] +
+                #   ['data_rgb']+ps[-6:-4]+ps[-2:-1]+['data']+ps[-1:])
+                pnew = '/'.join(date_liststr + ps[-5:-4] + ps[-2:-1] + ['data'] + ps[-1:])
+                pnew = os.path.join(args.data_folder_rgb, pnew)
+                return pnew
+
+        elif args.val == "select":
+            # transform = no_transform
+            transform = val_transform
+            glob_d = os.path.join(
+                args.data_folder,
+                "data_depth_selection/val_selection_cropped/velodyne_raw/*.png")
+            glob_gt = os.path.join(
+                args.data_folder,
+                "data_depth_selection/val_selection_cropped/groundtruth_depth/*.png"
+            )
+
+            def get_rgb_paths(p):
+                return p.replace("groundtruth_depth", "image")
+    elif split == "test_completion":
+        transform = no_transform
+        glob_d = os.path.join(
+            args.data_folder,
+            "data_depth_selection/test_depth_completion_anonymous/velodyne_raw/*.png"
+        )
+        glob_gt = None  # "test_depth_completion_anonymous/"
+        glob_rgb = os.path.join(
+            args.data_folder,
+            "data_depth_selection/test_depth_completion_anonymous/image/*.png")
+    elif split == "test_prediction":
+        transform = no_transform
+        glob_d = None
+        glob_gt = None  # "test_depth_completion_anonymous/"
+        glob_rgb = os.path.join(
+            args.data_folder,
+            "data_depth_selection/test_depth_prediction_anonymous/image/*.png")
+    else:
+        raise ValueError("Unrecognized split " + str(split))
+
+    if glob_gt is not None:
+        # train or val-full or val-select
+        paths_d = sorted(glob.glob(glob_d))
+        paths_gt = sorted(glob.glob(glob_gt))
+        paths_rgb = [get_rgb_paths(p) for p in paths_gt]
+    else:
+        # test only has d or rgb
+        paths_rgb = sorted(glob.glob(glob_rgb))
+        paths_gt = [None] * len(paths_rgb)
+        if split == "test_prediction":
+            paths_d = [None] * len(
+                paths_rgb)  # test_prediction has no sparse depth
+        else:
+            paths_d = sorted(glob.glob(glob_d))
+
+    if len(paths_d) == 0 and len(paths_rgb) == 0 and len(paths_gt) == 0:
+        raise (RuntimeError("Found 0 images under {}".format(glob_gt)))
+    if len(paths_d) == 0 and args.use_d:
+        raise (RuntimeError("Requested sparse depth but none was found"))
+    if len(paths_rgb) == 0 and args.use_rgb:
+        raise (RuntimeError("Requested rgb images but none was found"))
+    if len(paths_rgb) == 0 and args.use_g:
+        raise (RuntimeError("Requested gray images but no rgb was found"))
+    if len(paths_rgb) != len(paths_d) or len(paths_rgb) != len(paths_gt):
+        print(len(paths_rgb), len(paths_d), len(paths_gt))
+        # for i in range(999):
+        #    print("#####")
+        #    print(paths_rgb[i])
+        #    print(paths_d[i])
+        #    print(paths_gt[i])
+        # raise (RuntimeError("Produced different sizes for datasets"))
+    paths = {"rgb": paths_rgb, "d": paths_d, "gt": paths_gt}
+    return paths, transform
 
 def get_paths_and_transform(split, args):
     assert (args.use_d or args.use_rgb
@@ -192,6 +304,21 @@ def rgb_read(filename, args):
     
     return rgb_png
 
+def discrete_function1(x):
+    if x < 5:
+        return 0
+    elif 5<= x <= 30:
+        return 0.5*(x-5)/(30-5)
+    else:
+        return 0.5
+
+def discreta_function2(x):
+    if x < 5:
+        return 0
+    elif 5<= x <= 20:
+        return (x-5)**2/(20-5)**2
+    else:
+        return 1
 
 def depth_read1(filename, args, modal_missing, epoch):
     # loads depth map D from png file
@@ -203,9 +330,9 @@ def depth_read1(filename, args, modal_missing, epoch):
 
     # ehance the depth map training branch
     height, width = depth_png.shape
-    k = math.log(max(1, (epoch-9)))
+    k = math.log2(max(1, (epoch-9)))
     # print("enhancement k is:", k)
-    rect_height, rect_width = int(k * height//7), int(k * width//7)
+    rect_height, rect_width = int(k * height//20), int(k * width//20)
     top_left_x = random.randint(0, width - rect_width)
     top_left_y = random.randint(0, height - rect_height)
     depth_png[top_left_y:top_left_y+rect_height, top_left_x:top_left_x+rect_width] = 0
@@ -230,7 +357,7 @@ def depth_read2(filename, args, modal_missing, epoch):
 
     # ehance the depth map training branch
     height, width = depth_png.shape
-    k = math.log(max(1, (epoch-5)))
+    k = math.log2(max(1, (epoch-5)))
     # print("enhancement k is:", k)
     rect_height, rect_width = int(k * height//5), int(k * width//5)
     top_left_x = random.randint(0, width - rect_width)
@@ -431,7 +558,7 @@ class KittiDepth(data.Dataset):
     def __init__(self, split, args, epoch=0):
         self.args = args
         self.split = split
-        paths, transform = get_paths_and_transform(split, args)
+        paths, transform = get_paths_and_transform_full(split, args)
         self.paths = paths
         self.transform = transform
         self.K = load_calib()
@@ -439,7 +566,7 @@ class KittiDepth(data.Dataset):
         self.epoch = epoch
 
     def __getraw__(self, index):
-        modal_missing_rate = 0.5
+        modal_missing_rate = 0
         if random.random() < modal_missing_rate:
             modal_missing = True
         else:

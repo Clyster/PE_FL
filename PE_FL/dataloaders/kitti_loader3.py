@@ -419,7 +419,7 @@ class KittiDepth(data.Dataset):
         rgb = rgb_read(self.paths['rgb'][index], self.args) if \
             (self.paths['rgb'][index] is not None and (self.args.use_rgb or self.args.use_g)) else None
         if(modal_missing == True):
-            sparse = depth_read(self.paths['d'][index].replace('/KITTI/','/KITTI5/'), self.args, modal_missing) if (self.paths['d'][index] is not None and self.args.use_d) else None
+            sparse = depth_read(self.paths['d'][index].replace('/KITTI/','/KITTI/'), self.args, modal_missing) if (self.paths['d'][index] is not None and self.args.use_d) else None
             print("KITTI4")
         else:
             sparse = depth_read(self.paths['d'][index], self.args, modal_missing) if (self.paths['d'][index] is not None and self.args.use_d) else None
