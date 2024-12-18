@@ -1,0 +1,57 @@
+Summary of  val round
+RMSE=805.779
+MAE=232.086
+Photo=0.000
+iRMSE=3.166
+iMAE=1.116
+squared_rel=0.001739523453739821
+silog=3.1474548031985203
+Delta1=0.997
+REL=0.013
+Lg10=0.006
+t_GPU=0.065
+New best model by rmse (was 866.145)
+*
+
+=> starting training epoch 36 ..
+PEdepth_loss: tensor(0.4416, device='cuda:0', grad_fn=<MeanBackward0>) epoch: 36   0 / 14317
+
+
+Summary of  val round
+RMSE=802.901
+MAE=229.752
+Photo=0.000
+iRMSE=3.051
+iMAE=1.095
+squared_rel=0.0017019397558760828
+silog=3.10394606899648
+Delta1=0.997
+REL=0.013
+Lg10=0.006
+t_GPU=0.065
+New best model by rmse (was 805.779)
+*
+
+=> starting training epoch 37 ..
+PEdepth_loss: tensor(0.5959, device='cuda:0', grad_fn=<MeanBackward0>) epoch: 37   0 / 14317
+
+
+Summary of  val round
+RMSE=801.682
+MAE=228.654
+Photo=0.000
+iRMSE=2.837
+iMAE=1.076
+squared_rel=0.001654183089165599
+silog=3.0527281927697816
+Delta1=0.997
+REL=0.013
+Lg10=0.005
+t_GPU=0.065
+New best model by rmse (was 802.901)
+*
+
+=> starting training epoch 38 ..
+PEdepth_loss: tensor(0.6072, device='cuda:0', grad_fn=<MeanBackward0>) epoch: 38   0 / 14317
+
+
