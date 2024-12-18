@@ -1,0 +1,95 @@
+Summary of  val round
+RMSE=3050.970
+MAE=1569.891
+Photo=0.000
+iRMSE=52.548
+iMAE=8.935
+squared_rel=0.026100743090501054
+silog=13.046591894067346
+Delta1=0.911
+REL=0.091
+Lg10=0.040
+t_GPU=0.006
+New best model by rmse (was inf)
+*
+
+=> starting training epoch 1 ..
+depth_loss: tensor(6.2612, device='cuda:0', grad_fn=<AddBackward0>) cl_loss: tensor(61.3796, device='cuda:0', grad_fn=<MulBackward0>) epoch: 1   0 / 14317
+
+
+Summary of  val round
+RMSE=3573.247
+MAE=1665.464
+Photo=0.000
+iRMSE=6830.594
+iMAE=78.169
+squared_rel=0.020032521863467993
+silog=14.06701040991359
+Delta1=0.914
+REL=0.096
+Lg10=0.046
+t_GPU=0.006
+(best rmse is 3050.970)
+*
+
+=> starting training epoch 2 ..
+depth_loss: tensor(9.2729, device='cuda:0', grad_fn=<AddBackward0>) cl_loss: tensor(57.5608, device='cuda:0', grad_fn=<MulBackward0>) epoch: 2   0 / 14317
+
+
+Summary of  val round
+RMSE=3731.797
+MAE=2107.332
+Photo=0.000
+iRMSE=inf
+iMAE=inf
+squared_rel=0.031177597623318433
+silog=nan
+Delta1=0.859
+REL=0.130
+Lg10=inf
+t_GPU=0.006
+(best rmse is 3050.970)
+*
+
+=> starting training epoch 3 ..
+depth_loss: tensor(2.6701, device='cuda:0', grad_fn=<AddBackward0>) cl_loss: tensor(49.8443, device='cuda:0', grad_fn=<MulBackward0>) epoch: 3   0 / 14317
+
+
+Summary of  val round
+RMSE=2754.420
+MAE=1487.993
+Photo=0.000
+iRMSE=inf
+iMAE=inf
+squared_rel=0.017797581096445875
+silog=nan
+Delta1=0.918
+REL=0.093
+Lg10=inf
+t_GPU=0.006
+New best model by rmse (was 3050.970)
+*
+
+=> starting training epoch 4 ..
+depth_loss: tensor(2.6044, device='cuda:0', grad_fn=<AddBackward0>) cl_loss: tensor(42.6241, device='cuda:0', grad_fn=<MulBackward0>) epoch: 4   0 / 14317
+
+
+Summary of  val round
+RMSE=2828.998
+MAE=1558.998
+Photo=0.000
+iRMSE=inf
+iMAE=inf
+squared_rel=0.01701423940365203
+silog=nan
+Delta1=0.926
+REL=0.097
+Lg10=inf
+t_GPU=0.006
+(best rmse is 2754.420)
+*
+
+=> starting training epoch 5 ..
+depth_loss: tensor(3.3095, device='cuda:0', grad_fn=<AddBackward0>) cl_loss: tensor(39.9794, device='cuda:0', grad_fn=<MulBackward0>) epoch: 5   0 / 14317
+
+
