@@ -14,6 +14,7 @@ import helper
 import vis_utils
 
 from model4 import ECLNet
+from model4 import PECLNet, PECLNet_train
 # from model import PENet_C1_train
 # from model import PENet_C2_train
 # #from model import PENet_C4_train (Not Implemented)
@@ -265,19 +266,25 @@ def iterate(mode, args, loader, model, optimizer, logger, epoch):
         if mode == 'train':
             # Loss 1: the direct depth supervision from ground truth label
             # mask=1 indicates that a pixel does not ground truth labels
-            l1 = 0.8
-            l2 = 1-l1
-            cl_loss = (MaskedMSELoss(pred, output1.detach()).mean() + MaskedMSELoss(pred, output2.detach()).mean()) * 0.5
-            
-            depth_loss = depth_criterion(pred, gt)
-            Loss = l1* depth_loss + l2* cl_loss
-            scaler.scale(Loss).backward()
+            if args.network_model == 'e':
+                l1 = 0.8
+                l2 = 1-l1
+                cl_loss = (MaskedMSELoss(pred, output1.detach()).mean() + MaskedMSELoss(pred, output2.detach()).mean()) * 0.5
+                depth_loss = depth_criterion(pred, gt)
+                Loss = l1* depth_loss + l2* cl_loss
+                scaler.scale(Loss).backward()
 
-            #optimizer.step()
-            scaler.step(optimizer)
-            scaler.update()
-            optimizer.zero_grad()
-            print("depth_loss:", depth_loss, "cl_loss:",cl_loss ,"epoch:", epoch, " ", i, "/", len(loader) )
+                #optimizer.step()
+                scaler.step(optimizer)
+                scaler.update()
+                optimizer.zero_grad()
+                print("depth_loss:", depth_loss, "cl_loss:",cl_loss ,"epoch:", epoch, " ", i, "/", len(loader) )
+            else:
+                depth_loss = MaskedMSELoss(pred, gt)
+                depth_loss.backward()
+                optimizer.step()
+                optimizer.zero_grad()
+                print("PEdepth_loss:", depth_loss, "epoch:", epoch, " ", i, "/", len(loader) )
 
         if mode == "test_completion":
             str_i = str(i)
@@ -353,7 +360,20 @@ def main():
 
     print("=> creating model and optimizer ... ", end='')
     model = None
-    model = ECLNet(args).to(device)
+    penet_accelerated = False
+    if (args.network_model == 'e'):
+        model = ECLNet(args).to(device)
+    if (args.network_model == 'pe'):
+        if (is_eval == False):
+            model = PECLNet_train(args).to(device)
+        else:
+            model = PECLNet(args).to(device)
+            penet_accelerated = True
+    
+    if (penet_accelerated == True):
+        model.encoder3.requires_grad = False
+        model.encoder5.requires_grad = False
+        model.encoder7.requires_grad = False
 
     model_named_params = None
     model_bone_params = None
