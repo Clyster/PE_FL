@@ -1,0 +1,95 @@
+Summary of  val round
+RMSE=4149.844
+MAE=2160.751
+Photo=0.000
+iRMSE=40.949
+iMAE=12.501
+squared_rel=0.029941058652475476
+silog=16.248585097927442
+Delta1=0.865
+REL=0.119
+Lg10=0.057
+t_GPU=0.006
+New best model by rmse (was inf)
+*
+
+=> starting training epoch 1 ..
+depth_loss: tensor(8.8766, device='cuda:0', grad_fn=<AddBackward0>) cl_loss: tensor(61.5890, device='cuda:0', grad_fn=<MulBackward0>) epoch: 1   0 / 14317
+
+
+Summary of  val round
+RMSE=3771.370
+MAE=1945.580
+Photo=0.000
+iRMSE=8090.071
+iMAE=54.886
+squared_rel=0.028914478390167156
+silog=16.394019894233995
+Delta1=0.888
+REL=0.113
+Lg10=0.052
+t_GPU=0.006
+New best model by rmse (was 4149.844)
+*
+
+=> starting training epoch 2 ..
+depth_loss: tensor(9.6244, device='cuda:0', grad_fn=<AddBackward0>) cl_loss: tensor(52.8484, device='cuda:0', grad_fn=<MulBackward0>) epoch: 2   0 / 14317
+
+
+Summary of  val round
+RMSE=3545.415
+MAE=1803.250
+Photo=0.000
+iRMSE=1349.526
+iMAE=26.008
+squared_rel=0.025209810991904565
+silog=14.909737165770293
+Delta1=0.895
+REL=0.106
+Lg10=0.050
+t_GPU=0.006
+New best model by rmse (was 3771.370)
+*
+
+=> starting training epoch 3 ..
+depth_loss: tensor(8.4966, device='cuda:0', grad_fn=<AddBackward0>) cl_loss: tensor(48.0116, device='cuda:0', grad_fn=<MulBackward0>) epoch: 3   0 / 14317
+
+
+Summary of  val round
+RMSE=3315.784
+MAE=1808.480
+Photo=0.000
+iRMSE=inf
+iMAE=inf
+squared_rel=0.02490042680874467
+silog=nan
+Delta1=0.902
+REL=0.109
+Lg10=inf
+t_GPU=0.006
+New best model by rmse (was 3545.415)
+*
+
+=> starting training epoch 4 ..
+depth_loss: tensor(4.2573, device='cuda:0', grad_fn=<AddBackward0>) cl_loss: tensor(46.7910, device='cuda:0', grad_fn=<MulBackward0>) epoch: 4   0 / 14317
+
+
+Summary of  val round
+RMSE=3340.114
+MAE=1724.643
+Photo=0.000
+iRMSE=518.039
+iMAE=16.861
+squared_rel=0.019135476715746336
+silog=12.900552351020815
+Delta1=0.914
+REL=0.096
+Lg10=0.046
+t_GPU=0.006
+(best rmse is 3315.784)
+*
+
+=> starting training epoch 5 ..
+depth_loss: tensor(4.2070, device='cuda:0', grad_fn=<AddBackward0>) cl_loss: tensor(53.9705, device='cuda:0', grad_fn=<MulBackward0>) epoch: 5   0 / 14317
+
+
