@@ -1,0 +1,76 @@
+Summary of  val round
+RMSE=3555.598
+MAE=1791.606
+Photo=0.000
+iRMSE=382.603
+iMAE=16.885
+squared_rel=0.02131848773919046
+silog=14.257828326456886
+Delta1=0.900
+REL=0.103
+Lg10=0.050
+t_GPU=0.006
+(best rmse is 3315.784)
+*
+
+=> starting training epoch 6 ..
+depth_loss: tensor(5.4456, device='cuda:0', grad_fn=<AddBackward0>) cl_loss: tensor(55.0262, device='cuda:0', grad_fn=<MulBackward0>) epoch: 6   0 / 14317
+
+
+Summary of  val round
+RMSE=3622.129
+MAE=1813.736
+Photo=0.000
+iRMSE=inf
+iMAE=inf
+squared_rel=0.0231926082012554
+silog=nan
+Delta1=0.891
+REL=0.105
+Lg10=inf
+t_GPU=0.006
+(best rmse is 3315.784)
+*
+
+=> starting training epoch 7 ..
+depth_loss: tensor(4.8954, device='cuda:0', grad_fn=<AddBackward0>) cl_loss: tensor(47.0954, device='cuda:0', grad_fn=<MulBackward0>) epoch: 7   0 / 14317
+
+
+Summary of  val round
+RMSE=3566.530
+MAE=1796.819
+Photo=0.000
+iRMSE=inf
+iMAE=inf
+squared_rel=0.021435647804497016
+silog=nan
+Delta1=0.897
+REL=0.104
+Lg10=inf
+t_GPU=0.006
+(best rmse is 3315.784)
+*
+
+=> starting training epoch 8 ..
+depth_loss: tensor(6.7630, device='cuda:0', grad_fn=<AddBackward0>) cl_loss: tensor(45.5694, device='cuda:0', grad_fn=<MulBackward0>) epoch: 8   0 / 14317
+
+
+Summary of  val round
+RMSE=3518.382
+MAE=1736.829
+Photo=0.000
+iRMSE=inf
+iMAE=inf
+squared_rel=0.021205995093565435
+silog=nan
+Delta1=0.897
+REL=0.103
+Lg10=inf
+t_GPU=0.006
+(best rmse is 3315.784)
+*
+
+=> starting training epoch 9 ..
+depth_loss: tensor(3.5764, device='cuda:0', grad_fn=<AddBackward0>) cl_loss: tensor(49.0714, device='cuda:0', grad_fn=<MulBackward0>) epoch: 9   0 / 14317
+
+
