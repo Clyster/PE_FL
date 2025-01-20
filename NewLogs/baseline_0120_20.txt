@@ -1,0 +1,19 @@
+Summary of  val round
+RMSE=1554.199
+MAE=639.584
+Photo=0.000
+iRMSE=inf
+iMAE=inf
+squared_rel=0.009581997439614498
+silog=nan
+Delta1=0.971
+REL=0.037
+Lg10=inf
+t_GPU=0.004
+New best model by rmse (was 1834.078)
+*
+
+=> starting training epoch 3 ..
+loss: tensor(0.6709, device='cuda:0', grad_fn=<AddBackward0>)  epoch: 3   0 / 14317
+
+
